@@ -5,6 +5,7 @@ import (
 	"html/template"
 
 	"github.com/arejula27/myapp/handlers"
+	"github.com/arejula27/myapp/middlewares"
 	"github.com/labstack/echo/v4"
 )
 
@@ -26,8 +27,8 @@ func main() {
 	e.GET("/", handlers.Home)
 
 	//Restricted paths
-	//r := e.Group("/admin", middlewares.BasicAuth())
-	//r.GET("", handlers.PrivateHandler)
+	r := e.Group("/admin", middlewares.JWTAuth(), middlewares.CSRF())
+	r.GET("", handlers.PrivateHandler)
 
 	//Start server
 	e.Logger.Fatal(e.Start(config.Addres))
